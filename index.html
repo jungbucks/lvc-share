@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>레이트 바이브 코딩 · 수업 나눔</title>
+    <meta name="description" content="정보과학 레이트 바이브 코딩 수업 나눔 슬라이드 (1920×1080, 위에서 아래로 스크롤)" />
+    <style>
+      /* 글꼴: sih26 전시판과 동일 (SIL OFL 1.1, fonts/ 폴더에 라이선스) */
+      @font-face {
+        font-family: "Paperlogy";
+        src: url("fonts/Paperlogy-7Bold.woff2") format("woff2");
+        font-weight: 700;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Wanted Sans";
+        src: url("fonts/WantedSansVariable.woff2") format("woff2");
+        font-weight: 400 900;
+        font-display: swap;
+      }
+
+      /* ── 토큰: sih26 전시판 Prismfield 톤 ── */
+      :root {
+        --canvas: #ffffff;
+        --paper: #faf9f6;
+        --ink: #0b0b0f;
+        --muted: #5a5a66;
+        --line: #e4e2dd;
+        --tint: #f2f0eb;
+        --lime: #7ce25b;
+        --lime-edge: #5fc73f;
+        --lime-ink: #0b1a05;
+        --prism: linear-gradient(90deg, #e8429b, #9b5be8, #3fc7e8, #b8f25f, #f5b946);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        background: var(--tint);
+        color: var(--ink);
+        font-family: "Wanted Sans", -apple-system, "Malgun Gothic", sans-serif;
+        word-break: keep-all;
+        -webkit-font-smoothing: antialiased;
+      }
+      /* 슬라이드 묶음 = 크기 기준(컨테이너). 모든 치수는 1920px 기준값 × --u */
+      .deck {
+        container-type: inline-size;
+      }
+      .slide {
+        --u: calc(100cqw / 1920);
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        padding: calc(112 * var(--u)) calc(144 * var(--u)) calc(96 * var(--u));
+        background: var(--canvas);
+        font-size: calc(32 * var(--u));
+        line-height: 1.7;
+        letter-spacing: -0.01em;
+      }
+      .slide + .slide {
+        margin-top: calc(24 * var(--u));
+      }
+      .slide::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto;
+        height: calc(8 * var(--u));
+        background: var(--prism);
+      }
+      .num {
+        position: absolute;
+        right: calc(144 * var(--u));
+        bottom: calc(48 * var(--u));
+        font-size: calc(22 * var(--u));
+        font-weight: 600;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+      .brand {
+        position: absolute;
+        left: calc(144 * var(--u));
+        bottom: calc(48 * var(--u));
+        font-family: "Paperlogy", sans-serif;
+        font-size: calc(22 * var(--u));
+        letter-spacing: 0.04em;
+        color: var(--muted);
+      }
+      h1,
+      h2 {
+        margin: 0;
+        font-family: "Paperlogy", sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      h1 {
+        font-size: calc(96 * var(--u));
+        line-height: 1.25;
+      }
+      h2 {
+        font-size: calc(64 * var(--u));
+        line-height: 1.3;
+        margin-bottom: calc(48 * var(--u));
+      }
+      h3 {
+        margin: 0 0 calc(12 * var(--u));
+        font-size: calc(34 * var(--u));
+        line-height: 1.4;
+        font-weight: 750;
+      }
+      p {
+        margin: 0;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .lead {
+        font-size: calc(36 * var(--u));
+        line-height: 1.65;
+      }
+      .small {
+        font-size: calc(26 * var(--u));
+        line-height: 1.65;
+      }
+      strong {
+        font-weight: 750;
+      }
+      .mark {
+        background: linear-gradient(transparent 62%, rgba(124, 226, 91, 0.55) 62%);
+      }
+      .cols {
+        display: grid;
+        gap: calc(40 * var(--u));
+      }
+      .card {
+        padding: calc(40 * var(--u)) calc(44 * var(--u));
+        border: calc(2 * var(--u)) solid var(--line);
+        border-radius: calc(24 * var(--u));
+        background: var(--canvas);
+      }
+      .card.tint {
+        border-color: transparent;
+        background: var(--paper);
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        padding: calc(4 * var(--u)) calc(16 * var(--u));
+        border: calc(2 * var(--u)) solid var(--line);
+        border-radius: calc(12 * var(--u));
+        background: var(--paper);
+        font-size: calc(24 * var(--u));
+        font-weight: 650;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .callout {
+        padding: calc(32 * var(--u)) calc(40 * var(--u));
+        border-left: calc(8 * var(--u)) solid var(--lime-edge);
+        border-radius: calc(12 * var(--u));
+        background: var(--paper);
+      }
+      .bottomline {
+        position: absolute;
+        left: calc(144 * var(--u));
+        right: calc(144 * var(--u));
+        bottom: calc(120 * var(--u));
+        font-size: calc(38 * var(--u));
+        font-weight: 750;
+        line-height: 1.5;
+      }
+      .shot {
+        display: block;
+        width: 100%;
+        border: calc(2 * var(--u)) solid var(--line);
+        border-radius: calc(20 * var(--u));
+      }
+
+      /* ── 1. 표지 ── */
+      .cover {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-top: calc(80 * var(--u));
+      }
+      .cover h1 {
+        margin-bottom: calc(56 * var(--u));
+      }
+      .cover .lead {
+        max-width: calc(1300 * var(--u));
+      }
+      .cover .meta {
+        display: flex;
+        gap: calc(16 * var(--u));
+        margin-top: calc(64 * var(--u));
+      }
+
+      /* ── 2. 계기 ── */
+      .two {
+        grid-template-columns: 1fr 1fr;
+      }
+      .who {
+        display: block;
+        margin-bottom: calc(16 * var(--u));
+        font-size: calc(26 * var(--u));
+        font-weight: 700;
+        color: var(--muted);
+      }
+      .reasons {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: calc(40 * var(--u));
+        margin: calc(56 * var(--u)) 0 0;
+        padding: 0;
+        list-style: none;
+      }
+      .reasons li {
+        padding-top: calc(24 * var(--u));
+        border-top: calc(4 * var(--u)) solid var(--ink);
+        font-size: calc(30 * var(--u));
+        line-height: 1.6;
+      }
+
+      /* ── 3·4. 정의 ── */
+      .quotes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: calc(16 * var(--u));
+        margin: calc(32 * var(--u)) 0 calc(48 * var(--u));
+      }
+      .quotes .chip {
+        font-size: calc(26 * var(--u));
+        color: var(--ink);
+        background: var(--canvas);
+      }
+      .pro-con {
+        grid-template-columns: 1fr 1fr;
+      }
+      .tag {
+        display: inline-block;
+        margin-bottom: calc(12 * var(--u));
+        font-size: calc(24 * var(--u));
+        font-weight: 750;
+      }
+      .tag.good {
+        color: #2c7a14;
+      }
+      .tag.bad {
+        color: #b3261e;
+      }
+      .late {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: calc(64 * var(--u));
+        align-items: start;
+      }
+
+      /* ── 5. 수업 흐름 ── */
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: calc(20 * var(--u));
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: step;
+      }
+      .flow li {
+        position: relative;
+        padding: calc(32 * var(--u)) calc(28 * var(--u));
+        border-radius: calc(20 * var(--u));
+        background: var(--paper);
+        counter-increment: step;
+      }
+      .flow li::before {
+        content: counter(step);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: calc(48 * var(--u));
+        height: calc(48 * var(--u));
+        margin-bottom: calc(24 * var(--u));
+        border-radius: 50%;
+        background: var(--ink);
+        color: var(--canvas);
+        font-size: calc(24 * var(--u));
+        font-weight: 750;
+      }
+      .flow li.student {
+        background: var(--canvas);
+        box-shadow: inset 0 0 0 calc(3 * var(--u)) var(--lime-edge);
+      }
+      .flow .who {
+        margin-bottom: calc(8 * var(--u));
+      }
+      .flow h3 {
+        font-size: calc(30 * var(--u));
+      }
+      .flow p {
+        font-size: calc(24 * var(--u));
+        line-height: 1.6;
+        color: var(--muted);
+      }
+      .legend {
+        display: flex;
+        gap: calc(32 * var(--u));
+        margin-top: calc(32 * var(--u));
+        font-size: calc(24 * var(--u));
+        color: var(--muted);
+      }
+      .legend span::before {
+        content: "";
+        display: inline-block;
+        width: calc(20 * var(--u));
+        height: calc(20 * var(--u));
+        margin-right: calc(10 * var(--u));
+        border-radius: calc(6 * var(--u));
+        vertical-align: calc(-2 * var(--u));
+        background: var(--paper);
+      }
+      .legend .l-student::before {
+        background: var(--canvas);
+        box-shadow: inset 0 0 0 calc(3 * var(--u)) var(--lime-edge);
+      }
+
+      /* ── 6. 교사 쪽 ── */
+      .teacher {
+        display: grid;
+        grid-template-columns: 1fr 1.15fr;
+        gap: calc(64 * var(--u));
+      }
+      .tree {
+        margin: 0 0 calc(32 * var(--u));
+        padding: calc(36 * var(--u)) calc(40 * var(--u));
+        border-radius: calc(20 * var(--u));
+        background: #16161c;
+        color: #e9e9ee;
+        font-family: "D2Coding", Consolas, monospace;
+        font-size: calc(26 * var(--u));
+        line-height: 1.6;
+        white-space: pre;
+      }
+      .tree b {
+        color: var(--lime);
+        font-weight: 600;
+      }
+      .say {
+        padding: calc(24 * var(--u)) calc(32 * var(--u));
+        border-radius: calc(20 * var(--u)) calc(20 * var(--u)) calc(20 * var(--u)) calc(4 * var(--u));
+        background: var(--lime);
+        color: var(--lime-ink);
+        font-size: calc(28 * var(--u));
+        font-weight: 650;
+      }
+      .done {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .done li {
+        padding: calc(20 * var(--u)) 0;
+        border-bottom: calc(2 * var(--u)) solid var(--line);
+        font-size: calc(30 * var(--u));
+      }
+      .done li:first-child {
+        padding-top: 0;
+      }
+      .rules {
+        display: flex;
+        flex-wrap: wrap;
+        gap: calc(12 * var(--u));
+        margin-top: calc(32 * var(--u));
+      }
+
+      /* ── 7. 전시판 ── */
+      .board {
+        display: grid;
+        grid-template-columns: 1.35fr 1fr;
+        gap: calc(56 * var(--u));
+        align-items: start;
+      }
+      .board > .shot {
+        height: auto;
+      }
+      .feat {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .feat li {
+        margin-bottom: calc(32 * var(--u));
+      }
+      .feat p {
+        font-size: calc(27 * var(--u));
+        line-height: 1.6;
+        color: var(--muted);
+      }
+      .vlist {
+        display: flex;
+        gap: calc(12 * var(--u));
+        margin: calc(16 * var(--u)) 0 0;
+        padding: 0;
+        list-style: none;
+      }
+      .vlist li {
+        flex: 1;
+        padding: calc(14 * var(--u)) calc(16 * var(--u));
+        border: calc(2 * var(--u)) dashed var(--line);
+        border-radius: calc(14 * var(--u));
+        font-size: calc(22 * var(--u));
+        line-height: 1.4;
+        color: var(--muted);
+      }
+      .vlist li.now {
+        border-style: solid;
+        border-color: var(--lime-edge);
+        color: var(--ink);
+      }
+      .vlist b {
+        display: block;
+        font-family: "Paperlogy", sans-serif;
+        font-size: calc(28 * var(--u));
+        color: var(--ink);
+      }
+      .vlist span {
+        display: block;
+        font-size: calc(19 * var(--u));
+        color: var(--muted);
+      }
+      .shot.hist {
+        width: calc(470 * var(--u));
+        height: auto;
+        margin-top: calc(12 * var(--u));
+        border: 0;
+      }
+
+      /* ── 8. 배울 거리 ── */
+      .finds {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: calc(24 * var(--u));
+        margin-bottom: calc(40 * var(--u));
+      }
+      .finds .card {
+        padding: calc(32 * var(--u));
+      }
+      .finds h3 {
+        font-size: calc(28 * var(--u));
+      }
+      .finds p {
+        font-size: calc(24 * var(--u));
+        line-height: 1.6;
+        color: var(--muted);
+      }
+      .finds code {
+        font-family: "D2Coding", Consolas, monospace;
+        color: var(--ink);
+      }
+
+      /* ── 9. 학생 프롬프트 ── */
+      .prompt {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: calc(64 * var(--u));
+      }
+      .steps {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: s;
+      }
+      .steps li {
+        display: grid;
+        grid-template-columns: calc(56 * var(--u)) 1fr;
+        gap: calc(20 * var(--u));
+        padding: calc(18 * var(--u)) 0;
+        border-bottom: calc(2 * var(--u)) solid var(--line);
+        counter-increment: s;
+        font-size: calc(28 * var(--u));
+        line-height: 1.55;
+      }
+      .steps li::before {
+        content: counter(s);
+        font-family: "Paperlogy", sans-serif;
+        font-size: calc(36 * var(--u));
+        line-height: 1.2;
+      }
+      .steps small {
+        display: block;
+        font-size: calc(23 * var(--u));
+        color: var(--muted);
+      }
+      .form {
+        padding: calc(36 * var(--u)) calc(40 * var(--u));
+        border-radius: calc(20 * var(--u));
+        background: #16161c;
+        color: #e9e9ee;
+        font-family: "D2Coding", Consolas, monospace;
+        font-size: calc(23 * var(--u));
+        line-height: 1.6;
+        white-space: pre;
+      }
+      .form b {
+        color: var(--lime);
+        font-weight: 600;
+      }
+
+      /* ── 10. 비용 ── */
+      .cost {
+        display: grid;
+        align-items: start;
+        grid-template-columns: 1.2fr 1fr;
+        gap: calc(64 * var(--u));
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: calc(28 * var(--u));
+      }
+      th,
+      td {
+        padding: calc(20 * var(--u)) calc(16 * var(--u));
+        border-bottom: calc(2 * var(--u)) solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        width: 34%;
+        color: var(--muted);
+        font-weight: 650;
+      }
+
+      /* ── 11. 맺음 ── */
+      .closing {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .closing h1 {
+        font-size: calc(88 * var(--u));
+        margin-bottom: calc(64 * var(--u));
+      }
+      .closing .lead {
+        max-width: calc(1400 * var(--u));
+      }
+
+      @media print {
+        html,
+        body {
+          background: #fff;
+        }
+        .slide {
+          break-after: page;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="deck">
+      <!-- 1 -->
+      <section class="slide cover" aria-label="표지">
+        <h1>딸깍 한 번이면 끝나는 과제를,<br />다섯 번 고치게 만들 수 있을까</h1>
+        <p class="lead">
+          학생 21명의 첫 작품은 <strong>하루 만에</strong> 전시판에 올라갔습니다.<br />
+          이 수업의 진짜 과제는 그다음부터 시작됩니다.
+        </p>
+        <div class="meta">
+          <span class="chip">레이트 바이브 코딩</span>
+          <span class="chip">정보과학 · 2학년 2개 반</span>
+          <span class="chip">2026. 10.</span>
+        </div>
+        <span class="brand">SIH26 수업 나눔</span>
+        <span class="num">1</span>
+      </section>
+
+      <!-- 2 -->
+      <section class="slide" aria-label="계기">
+        <h2>같은 과제를 받은 두 학생</h2>
+        <div class="cols two">
+          <div class="card">
+            <span class="who">어떤 학생은</span>
+            <h3>기획을 고쳐 쓰고, 결과를 돌려 보고, 다시 묻습니다.</h3>
+            <p class="muted small">AI가 만든 것을 자기 기준으로 따져 봅니다.</p>
+          </div>
+          <div class="card">
+            <span class="who">어떤 학생은</span>
+            <h3>한 번 '딸깍'하고, 나온 그대로 냅니다.</h3>
+            <p class="muted small">AI는 이 학생에게도 그럴듯한 결과를 줍니다.</p>
+          </div>
+        </div>
+        <ul class="reasons">
+          <li>한 번의 '딸깍'으로 끝나는 제출이 <strong>싫었습니다.</strong></li>
+          <li>한 번에 끝나지 않는 <strong>장기 프로젝트</strong>를 경험시키고 싶었습니다.</li>
+          <li>AI는 대단합니다. 그래도 사람이 <strong>생각하고 숙성되는 시간</strong>이 필요합니다.</li>
+        </ul>
+        <span class="brand">SIH26 수업 나눔</span>
+        <span class="num">2</span>
+      </section>
+
+      <!-- 3 -->
+      <section class="slide" aria-label="바이브 코딩">
+        <h2>바이브 코딩: 코드를 읽지 않고 만든다</h2>
+        <p class="lead">
+          2025년 2월 AI 연구자 안드레이 카파시(Andrej Karpathy)가 처음 쓴 말입니다.<br />
+          만들고 싶은 것을 말로 설명하면 AI가 코드를 쓰고, 사람은 "되는 것 같으면" 넘어갑니다.
+        </p>
+        <div class="quotes">
+          <span class="chip">"코드가 존재한다는 것조차 잊는다"</span>
+          <span class="chip">"바뀐 부분을 읽지 않는다"</span>
+          <span class="chip">"오류가 나면 그냥 복사해서 붙여 넣는다"</span>
+        </div>
+        <div class="cols pro-con">
+          <div class="card tint">
+            <span class="tag good">장점</span>
+            <h3>프로그래밍을 몰라도 몇 분 만에 그럴듯한 프로그램이 나옵니다.</h3>
+          </div>
+          <div class="card tint">
+            <span class="tag bad">문제</span>
+            <h3>아무도 코드를 확인하지 않으니, 틀린 부분을 찾는 단계가 없습니다.</h3>
+          </div>
+        </div>
+        <span class="brand">SIH26 수업 나눔</span>
+        <span class="num">3</span>
+      </section>
+
+      <!-- 4 -->
+      <section class="slide" aria-label="레이트 바이브 코딩">
+        <h2>레이트 바이브 코딩: 판단을 늦게라도, 반드시</h2>
+        <div class="late">
+          <div>
+            <p class="lead">
+              레이트 바이브 코딩도 AI가 만들어 줍니다. 하지만 무작정 부탁하기 전에 한 번 더
+              생각하고, 만든 뒤에는 사람이 반드시 거치는 <span class="mark">'판단 단계'</span>를
+              붙입니다.
+            </p>
+            <p class="lead" style="margin-top: calc(32 * var(--u))">
+              만드는 일은 AI에게, <strong>맞는지 결정하는 일은 사람에게.</strong>
+            </p>
+          </div>
+          <div class="callout">
+            <h3>자율주행차와 운전자</h3>
+            <p class="small">
+              자율주행차가 잘 달린다고 해서 운전자가 잠들어도 되는 건 아닙니다. 운전은 차가
+              하지만, 이상한 순간을 알아차리고 핸들을 잡는 건 사람의 몫입니다. 레이트 바이브
+              코딩에서 사람은 운전자석에 앉아 감독합니다.
+            </p>
+          </div>
+        </div>
+        <p class="bottomline">AI에게 일을 맡기지만, 결과물은 내가 맡는다.</p>
+        <span class="brand">SIH26 수업 나눔</span>
+        <span class="num">4</span>
+      </section>
+
+      <!-- 5 -->
+      <section class="slide" aria-label="수업 흐름">
+        <h2>한 작품이 다섯 번 자라는 흐름</h2>
+        <ol class="flow">
+          <li class="student">
+            <span class="who">학생</span>
+            <h3>기획서(PRD)</h3>
+            <p>AI와 대화하며 무엇을, 왜, 어떻게 만들지 요구명세서로 씁니다.</p>
+          </li>
+          <li>
+            <span class="who">AI · 교사 운영</span>
+            <h3>구현과 게시</h3>
+            <p>기획서대로 만들고 직접 실행해 검증한 뒤 전시판에 올립니다.</p>
+          </li>
+          <li>
+            <span class="who">AI</span>
+            <h3>검토 의견 3개</h3>
+            <p>만들면서 발견한 빈틈과 임의로 정한 부분을 개선 거리로 남깁니다.</p>
+          </li>
+          <li class="student">
+            <span class="who">학생</span>
+            <h3>테스트와 판단</h3>
+            <p>직접 써 보고, 의견마다 반영할지 보류할지와 그 이유를 씁니다.</p>
+          </li>
+          <li class="student">
+            <span class="who">학생</span>
+            <h3>수정 요청서</h3>
+            <p>이번에 바꿀 것을 최대 3개 고르고, 확인 방법까지 적습니다.</p>
+          </li>
+          <li>
+            <span class="who">반복</span>
+            <h3>1회 → 5회 개선</h3>
+            <p>2단계로 돌아가 다시 구현합니다. 매번 버전 기록이 쌓입니다.</p>
+          </li>
+        </ol>
+        <div class="legend">
+          <span class="l-student">학생이 판단하는 단계</span>
+          <span>AI가 만드는 단계</span>
+        </div>
+        <p class="bottomline">학생은 코드를 고치지 않습니다. 무엇을, 왜 바꿀지를 결정합니다.</p>
+        <span class="brand">SIH26 수업 나눔</span>
+        <span class="num">5</span>
+      </section>
+
+      <!-- 6 -->
+      <section class="slide" aria-label="교사의 작업 방식">
+        <h2>교사는 폴더 경로 하나만 말합니다</h2>
+        <div class="teacher">
+          <div>
+            <div class="tree">sih26-request/
+├─ <b>M반 (2-8)</b>/
+│   ├─ PRD/        ← 학생 기획서
+│   └─ 1회 개선/   ← 학생 수정 요청서
+└─ <b>O반 (2-5)</b>/
+    └─ PRD/</div>
+            <p class="say">"작업 지시서 읽고 O반 (2-5)\PRD 진행해 줘"</p>
+          </div>
+          <div>
+            <ul class="done">
+              <li>폴더 이름에서 <strong>반과 단계</strong>를 읽습니다.</li>
+              <li>학생 1명당 AI 에이전트 1개, <strong>5명씩 동시에</strong> 구현합니다.</li>
+              <li>휴대폰 화면·전시판 안 실행·외부 연결 없음까지 <strong>직접 실행해 확인</strong>합니다.</li>
+              <li>학생별 <strong>AI 검토 의견 3개</strong>를 쓰고, 전시판에 게시합니다.</li>
+            </ul>
+            <div class="rules">
+              <span class="chip">기획서는 공개 저장소 밖에</span>
+              <span class="chip">학생 이름 비공개</span>
+              <span class="chip">서버 기능은 흉내 내지 않기</span>
+              <span class="chip">확인 못 한 것은 '미확인'</span>
+            </div>
+          </div>
+        </div>
+        <span class="brand">SIH26 수업 나눔</span>
+        <span class="num">6</span>
+      </section>
+
+      <!-- 7 -->
+      <section class="slide" aria-label="전시판">
+        <h2>전시판: 커밋 하나가 성장 기록 한 줄</h2>
+        <div class="board">
+          <img class="shot" src="img/gallery.png" alt="sih26 전시판 목록 화면. 작품 카드마다 학번, 반, PRD 단계 배지가 붙어 있다." />
+          <ul class="feat">
+            <li>
+              <h3>진행 단계 배지</h3>
+              <p>PRD → 1회 개선 → … → 5회 개선. 지금 어디까지 왔는지 한눈에 봅니다.</p>
+            </li>
+            <li>
+              <h3>AI 검토 의견</h3>
+              <p>작품 화면에서 스위치를 켜면 다음 개선의 출발점 3개가 펼쳐집니다.</p>
+            </li>
+            <li>
+              <h3>제작 기록 V1, V2 …</h3>
+              <p>작품 파일의 Git 이력에서 자동으로 쌓입니다. 사람이 적지 않습니다.</p>
+              <ol class="vlist" aria-label="제작 기록 예시">
+                <li class="now"><b>V1</b>PRD<span>10. 13.</span></li>
+                <li><b>V2</b>1회 개선<span>다음 수업</span></li>
+                <li><b>V3</b>2회 개선<span>…</span></li>
+                <li><b>V6</b>5회 개선<span>마지막 개선</span></li>
+              </ol>
+            </li>
+          </ul>
+        </div>
+        <span class="brand">SIH26 수업 나눔</span>
+        <span class="num">7</span>
+      </section>
+
+      <!-- 8 -->
+      <section class="slide" aria-label="AI가 찾은 배울 거리">
+        <h2>학생 기획서의 빈틈이 다음 수업의 교재가 됩니다</h2>
+        <div class="finds">
+          <div class="card">
+            <h3>기댓값 공식</h3>
+            <p>기획서는 <code>E=100p</code>, 예시는 "50% → 2회". 예시와 맞는 식은 <code>100÷p</code>입니다.</p>
+          </div>
+          <div class="card">
+            <h3>빠진 제곱근</h3>
+            <p>포트폴리오 표준편차 공식에 <code>√</code>가 빠져, 분산을 표준편차라고 적었습니다.</p>
+          </div>
+          <div class="card">
+            <h3>엇갈린 규칙</h3>
+            <p>한 기획서 안에서 "출시일 당일"을 어느 목록에 넣을지 두 절이 서로 다르게 말합니다.</p>
+          </div>
+          <div class="card">
+            <h3>AI가 정한 규칙</h3>
+            <p>기획서에 없던 '순환 연결 막기'를 AI가 넣었습니다. 필요한 규칙인지는 학생이 판단합니다.</p>
+          </div>
+        </div>
+        <img class="shot" src="img/feedback.png" alt="전시판의 AI 검토 의견 카드 3장. 1번: 기댓값 공식 바로잡기" />
+        <span class="brand">SIH26 수업 나눔</span>
+        <span class="num">8</span>
+      </section>
+
+      <!-- 9 -->
+      <section class="slide" aria-label="학생용 수정 요청 프롬프트">
+        <h2>학생은 AI와 함께 '수정 요청서'를 만듭니다</h2>
+        <div class="prompt">
+          <ol class="steps">
+            <li><span>프로그램 이해<small>학번·지금 단계 확인, 전시판에서 받은 HTML 첨부</small></span></li>
+            <li><span>직접 테스트 4~6개<small>실행 전에 기대 결과를 먼저 말하고, 실제와 비교</small></span></li>
+            <li><span>AI 검토 의견 판단<small>의견마다 맞는지, 반영할지 보류할지, 왜인지</small></span></li>
+            <li><span>바꿀 것 최대 3개 구체화<small>"예쁘게"를 확인할 수 있는 규칙으로 바꾸기</small></span></li>
+            <li><span>정해진 형식으로 제출<small>이 대화에서 AI는 코드를 고치지 않습니다</small></span></li>
+          </ol>
+          <div class="form"><b>[수정 지시 프롬프트]</b>
+학번 · 작품 제목 · 이번 단계
+
+1. 테스트 결과  기대 / 실제 / 확인 여부
+2. AI 검토 의견에 대한 나의 판단
+   ① 반영 또는 보류 / 이유
+3. 이번에 바꿀 것 (최대 3개)
+   이유 · 현재 동작 · 원하는 동작
+   규칙 · 확인 방법
+4. 그대로 유지할 기능
+5. 이번에 하지 않을 것</div>
+        </div>
+        <span class="brand">SIH26 수업 나눔</span>
+        <span class="num">9</span>
+      </section>
+
+      <!-- 10 -->
+      <section class="slide" aria-label="비용과 운영">
+        <h2>하루, 21명, 5시간 한도의 4분의 1</h2>
+        <div class="cost">
+          <table>
+            <tbody>
+              <tr><th>처리한 기획서</th><td>21명 (M반 9명 · O반 12명)</td></tr>
+              <tr><th>작업 방식</th><td>학생 1명당 에이전트 1개, 5개씩 동시에</td></tr>
+              <tr><th>사용량</th><td>Claude Max 5x 기준 5시간 한도 약 25%, 주간 한도 약 4%<br /><span class="muted small">전시판 기능 개선 작업 포함</span></td></tr>
+              <tr><th>Pro 요금제라면</th><td>5시간 한도를 넘었을 것으로 추정 → 반 단위로 나누어 진행<br /><span class="muted small">요금제 배율로 어림한 값</span></td></tr>
+            </tbody>
+          </table>
+          <div class="callout">
+            <h3>운영 팁</h3>
+            <p class="small">
+              에이전트를 쓰면 교사가 컴퓨터 앞에 머무는 시간이 줄어듭니다. 한 번에 5명을 맡겨
+              두고, 끝난 묶음만 확인하면 됩니다.
+            </p>
+          </div>
+        </div>
+        <span class="brand">SIH26 수업 나눔</span>
+        <span class="num">10</span>
+      </section>
+
+      <!-- 11 -->
+      <section class="slide closing" aria-label="맺음">
+        <h1>AI에게 일을 맡기지만,<br />결과물은 내가 맡는다.</h1>
+        <p class="lead">
+          학생에게 하는 말이자, 저에게 하는 말입니다. 저도 AI 활용의 전문가는 아닙니다.
+          <strong>자주 써 보고 접하는 시간이 늘어야 실력이 는다</strong>고 믿습니다.
+        </p>
+        <span class="brand">SIH26 수업 나눔</span>
+        <span class="num">11</span>
+      </section>
+    </main>
+  </body>
+</html>
